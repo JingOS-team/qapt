@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/new/prefix1"/>
+    <qresource prefix="/">
+        <file>jingos/DebViewer.qml</file>
+        <file>jingos/InstallText.qml</file>
+        <file>jingos/InstallTreeView.qml</file>
+        <file>jingos/main.qml</file>
+        <file>jingos/DebInstallTab.qml</file>
+    </qresource>
+</RCC>

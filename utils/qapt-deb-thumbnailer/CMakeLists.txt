@@ -2,7 +2,8 @@ add_library(debthumbnailer MODULE DebThumbnailer.cpp)
 
 target_link_libraries(debthumbnailer
     KF5::KIOWidgets
-    QApt::Main)
+    QApt::Main
+    Qt5::Qml)
 
 message(WARNING "make sure thumbnailer actually works")
 

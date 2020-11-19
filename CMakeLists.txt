@@ -27,7 +27,7 @@ include(ECMGeneratePriFile) # This needs InstallDirs
 kde_enable_exceptions()
 
 set(REQUIRED_QT_VERSION 5.8.0) # Used in QAptConfig
-find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus Widgets)
+find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus Widgets Quick QuickWidgets)
 
 find_package(Xapian REQUIRED)
 find_package(AptPkg REQUIRED)
@@ -101,9 +101,9 @@ add_feature_info(qapt-utils WITH_UTILS "Runtime utilities using KDE frameworks")
 add_feature_info(qapt-gst-helper WITH_GSTREAMER "GStreamer codec helper util")
 
 message(WARNING "gettext and tr in the same source is insanely tricky, maybe we should give some ki18n to qapt...")
-if (IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/po")
-    ecm_install_po_files_as_qm(po)
-endif()
+#if (IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/po")
+#    ecm_install_po_files_as_qm(po)
+#endif()
 
 # create a Config.cmake and a ConfigVersion.cmake file and install them
 set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/QApt")
