@@ -19,11 +19,19 @@
  ***************************************************************************/
 
 #include "DebInstaller.h"
+#include "jingos/JdebInstaller.h"
 
 #include <QApplication>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <QDialog>
+#include <QPushButton>
 #include <QCommandLineParser>
 #include <QIcon>
 #include <QPointer>
+#include <QFile>
+#include <QTextStream>
 
 #include <KAboutData>
 #include <KLocalizedString>
@@ -36,6 +44,7 @@ static const char version[] = CMAKE_PROJECT_VERSION;
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
+//    QGuiApplication app(argc, argv);
     app.setWindowIcon(QIcon::fromTheme("applications-other"));
 
     KLocalizedString::setApplicationDomain("qapt-deb-installer");
@@ -75,16 +84,24 @@ int main(int argc, char **argv)
         debFile = parser.positionalArguments().at(0);
     }
 
-    QPointer<DebInstaller> debInstaller = new DebInstaller(0, debFile);
+//    QPointer<DebInstaller> debInstaller = new DebInstaller(0, debFile);
+//    switch (debInstaller->exec()) {
+//        case QDialog::Accepted:
+//            return 0;
+//            break;
+//        case QDialog::Rejected:
+//        default:
+//            return 1;
+//    }
 
-    switch (debInstaller->exec()) {
-        case QDialog::Accepted:
-            return 0;
-            break;
-        case QDialog::Rejected:
-        default:
-            return 1;
-    }
+    app.setQuitOnLastWindowClosed(true);
+    qmlRegisterUncreatableType<JdebInstaller>("jingos.debInstaller", 1, 0, "JdebInstaller","can creat debInstaller");
+    QPointer<JdebInstaller> jdebInstaller = new JdebInstaller();
+    QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("debInstaller", jdebInstaller);
+    engine.load(QUrl(QStringLiteral("qrc:/jingos/main.qml")));
+    jdebInstaller->setDebFileInfo(debFile);
 
-    return 0;
+
+    return app.exec();
 }
