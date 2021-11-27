@@ -1,6 +1,7 @@
 Source: libqapt
 Section: kde
 Priority: optional
+Maintainer: Debian/Kubuntu KDE Extras Team <pkg-kde-extras@lists.alioth.debian.org>
 Uploaders: Sune Vuorela <sune@debian.org>,
            Kai Wasserbäch <curan@debian.org>,
            Floris-Andrei Stoica-Marcu <floris.sm@gmail.com>,
@@ -30,12 +31,18 @@ Build-Depends: cmake (>= 2.8.12),
                pkg-kde-tools (>> 0.15.15),
                qtbase5-dev (>= 5.2.0),
                qttools5-dev,
-               qttools5-dev-tools
+               qttools5-dev-tools,
+               extra-cmake-modules,
+               libxapian-dev,
+               libpolkit-qt5-1-dev,
+               libglib2.0-dev,
+               qttools5-dev,
+               qtdeclarative5-dev,
+               libkf5kdelibs4support-dev
 Standards-Version: 3.9.8
 Homepage: https://cgit.kde.org/libqapt.git/
-Vcs-Git: https://invent.kde.org/neon/extras/qapt.git
-Vcs-Browser: https://invent.kde.org/neon/extras/qapt
-Maintainer: Neon CI <neon@kde.org>
+Vcs-Browser: https://code.launchpad.net/~kubuntu-packagers/kubuntu-packaging/+git/libqapt
+Vcs-Git: git://git.launchpad.net/~kubuntu-packagers/kubuntu-packaging/+git/libqapt
 
 Package: libqapt3
 Architecture: any

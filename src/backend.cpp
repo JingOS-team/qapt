@@ -470,11 +470,16 @@ Package *Backend::packageForFile(const QString &file) const
     if (file.isEmpty()) {
         return nullptr;
     }
-
     for (Package *package : d->packages) {
-        if (package->installedFilesList().contains(file)) {
-            return package;
+        QStringList packageFileList = package->installedFilesList();
+        foreach (QString packageFile , packageFileList) {
+            if (file == packageFile || packageFile.endsWith(file)) {
+                return package;
+            }
         }
+        // if (package->installedFilesList().contains(file)) {
+        //     return package;
+        // }
     }
 
     return nullptr;

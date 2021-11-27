@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright © 2010-2012 Jonathan Thomas <echidnaman@kubuntu.org>        *
+ *               2021 Rui Wang <wangrui@jingos.com>                        *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or         *
  *   modify it under the terms of the GNU General Public License as        *
@@ -545,7 +546,7 @@ void AptWorker::commitChanges()
         break;
     }
 
-    if (failed && !packageManager->FixMissing()) {
+    if (failed) {
         m_trans->setError(QApt::FetchError);
         return;
     }

@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright © 2012 Jonathan Thomas <echidnaman@kubuntu.org>             *
+ *               2021 Rui Wang <wangrui@jingos.com>                       *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or         *
  *   modify it under the terms of the GNU General Public License as        *
@@ -29,6 +30,8 @@
 // Own includes
 #include "dbusinterfaces_p.h"
 
+#define DBUS_TIMEOUT 60000 // 60 seconds
+
 namespace QApt {
 
 class TransactionPrivate
@@ -51,6 +54,7 @@ class TransactionPrivate
             dbus = new TransactionInterface(QLatin1String(s_workerReverseDomainName),
                                             tid, QDBusConnection::systemBus(),
                                             0);
+            dbus->setTimeout(DBUS_TIMEOUT);
         }
 
         ~TransactionPrivate()

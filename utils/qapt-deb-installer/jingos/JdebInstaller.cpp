@@ -1,22 +1,11 @@
-/***************************************************************************
- *   Copyright © 2021 yujiashu <yujiashu@jingos.com>                       *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU General Public License as        *
- *   published by the Free Software Foundation; either version 2 of        *
- *   the License or (at your option) version 3 or any later version        *
- *   accepted by the membership of KDE e.V. (or its successor approved     *
- *   by the membership of KDE e.V.), which shall act as a proxy            *
- *   defined in Section 14 of version 3 of the license.                    *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
- ***************************************************************************/
+/*
+ * Copyright (C) 2021 Beijing Jingling Information System Technology Co., Ltd. All rights reserved.
+ * 
+ * Authors: 
+ * Jiashu Yu <yujiashu@jingos.com>
+ *
+ */
+
 #include "JdebInstaller.h"
 #include "InstallTreeModel.h"
 #include "JreadFile.h"
@@ -184,8 +173,10 @@ void JdebInstaller::setProgressText(const QString &str)
 
 void JdebInstaller::setDebFileInfo(const QString &info)
 {
+    setStrIcon("/usr/share/icons/jing/SwiMachine/icon.svg");
     if (!m_pBackend->init()){
         initError();
+        return;
     }
     QApt::FrontendCaps caps = (QApt::FrontendCaps)(QApt::DebconfCap);
     m_pBackend->setFrontendCaps(caps);
@@ -197,6 +188,7 @@ void JdebInstaller::setDebFileInfo(const QString &info)
         m_strStatusText=i18nc("@info","It does not appear to be a valid Debian package file");
         setStatusText(m_strStatusText);
         setInstallProcess(InstallError);
+        return;
     }
     m_oldCacheState=m_pBackend->currentCacheState();
     m_pJreadFile->setPath(info);
@@ -206,7 +198,6 @@ void JdebInstaller::setDebFileInfo(const QString &info)
     connect(this,&JdebInstaller::readFileInfoSig,m_pJreadFile,&JreadFile::getFileList);
     connect(m_pJreadFile,&JreadFile::strIconReadSig,this,&JdebInstaller::onReadDepIconSig);
     connect(m_pJreadFile,&JreadFile::fileReadSig,this,&JdebInstaller::onReadFileInfoSig);
-    setStrIcon("/usr/share/icons/jing/SwiMachine/icon.svg");
     emit readDepIconSig();
 
     setStrDebName("load icon: " +m_pDebFile->packageName());
@@ -227,6 +218,7 @@ void JdebInstaller::setDebFileInfo(const QString &info)
     bool canInstall = checkDeb();
     if(!canInstall){
         setInstallProcess(InstallError);
+        return;
     }
     setStatusText(m_strStatus);
 
@@ -239,8 +231,11 @@ void JdebInstaller::setDebFileInfo(const QString &info)
 void JdebInstaller::initError()
 {
     QString details = m_pBackend->initErrorMessage();
+    QString title = i18nc("@title:window", "Initialization error");
     m_strStatusText=i18nc("@info","Initialization error\nThe package system could not "
                     "be initialized, yourconfiguration may be broken.")+details;
+//    KMessageBox::detailedError(this, m_strStatusText, details, title);
+//    exit(-1);
     setStatusText(m_strStatusText);
     setInstallProcess(InstallError);
 }
@@ -593,11 +588,13 @@ void JdebInstaller::setupTransaction(QApt::Transaction *trans)
 /* 读取图标信号 */
 void JdebInstaller::onReadDepIconSig(const QString &strPath, const QString &strIcon)
 {
+    setStrDebName(m_pDebFile->packageName());
+    if(strPath.isEmpty()||strIcon.isEmpty())
+        return;
     QString finalPath = strPath + strIcon;
     if (QFile::exists(finalPath)) {
         setStrIcon(finalPath);
     }
-    setStrDebName(m_pDebFile->packageName());
 }
 /* 读取文件信息信号 */
 void JdebInstaller::onReadFileInfoSig(const QStringList &fileList)

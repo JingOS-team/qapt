@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright © 2011 Jonathan Thomas <echidnaman@kubuntu.org>             *
+ *               2021 Jiashu Yu <yujiashu@jingos.com>                       *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or         *
  *   modify it under the terms of the GNU General Public License as        *
@@ -28,6 +29,7 @@
 // Must be before APT_PKG_ABI checks!
 #include <apt-pkg/macros.h>
 
+#include <iostream>
 #include <apt-pkg/debfile.h>
 #include <apt-pkg/fileutl.h>
 #if APT_PKG_ABI >= 600
@@ -150,9 +152,14 @@ QString DebFile::homepage() const
 
 QString DebFile::longDescription() const
 {
-    QString rawDescription = QLatin1String(d->controlData->FindS("Description").c_str());
+    QString rawDescription =QString::fromStdString(d->controlData->FindS("Description"));
+
     // Remove short description
-    rawDescription.remove(shortDescription() + '\n');
+    if(rawDescription != shortDescription()) {
+        rawDescription.remove(shortDescription() + '\n');
+    } else {
+        return "";
+    }
 
     QString parsedDescription;
     // Split at double newline, by "section"
@@ -181,7 +188,8 @@ QString DebFile::longDescription() const
 
 QString DebFile::shortDescription() const
 {
-    QString longDesc = QLatin1String(d->controlData->FindS("Description").c_str());
+//    QString longDesc = QLatin1String(d->controlData->FindS("Description").c_str());
+    QString longDesc = QString::fromStdString(d->controlData->FindS("Description"));
 
     return longDesc.left(longDesc.indexOf(QLatin1Char('\n')));
 }

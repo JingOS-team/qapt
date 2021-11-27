@@ -346,7 +346,7 @@ msgstr "安装中"
 #: utils/qapt-deb-installer/jingos/DebViewer.qml:199
 #, kde-format
 msgid "Done"
-msgstr "开始"
+msgstr "完成"
 
 #: utils/qapt-deb-installer/jingos/DebViewer.qml:206
 #, kde-format

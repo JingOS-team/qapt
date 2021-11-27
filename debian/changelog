@@ -1,8 +1,8 @@
-libqapt (3.0.5) focal; urgency=medium
+libqapt (3.0.6) focal; urgency=medium
 
-  * Automatic Ubuntu CI Build
+  * Format version
 
- -- Neon CI <neon@kde.org>  Fri, 20 Nov 2020 01:59:48 +0000
+ -- JingOS CI <jingos@jingos.com>  Sat, 27 Nov 2021 19:17:41 +0800
 
 libqapt (3.0.5-1neon) xenial; urgency=medium
 
@@ -818,3 +818,4 @@ qapt (0.3.0-0ubuntu1) maverick; urgency=low
   * Initial release
 
  -- Jonathan Thomas <echidnaman@kubuntu.org>  Wed, 02 Jun 2010 14:47:35 -0500
+ 
